@@ -23,6 +23,7 @@ public class BookRepository implements BookRepositoryInterface {
     private long isbnKey;
     //private int idKey;
     private int ridKey;
+   
 
     
     
@@ -53,14 +54,12 @@ public class BookRepository implements BookRepositoryInterface {
     
     
     
+    
+    
     /**
      * This will create author links for a particular isbn
      */
-    public Author getAuthorLinks(Long isbn)
-    {
-    	Author author = null;
-    	return author;	
-    }
+    
     
     
     
@@ -101,7 +100,7 @@ public class BookRepository implements BookRepositoryInterface {
 	// Generate new ISBN
 	Long isbn = generateISBNKey();
 	newBook.setIsbn(isbn);
-	//Author response = getAuthorLinks(isbn);
+	
 	// Finally, save the new book into the map
 	bookInMemoryMap.putIfAbsent(isbn, newBook);
 	return newBook;
@@ -148,7 +147,7 @@ public class BookRepository implements BookRepositoryInterface {
 
     public Review getReviewByID(Long isbn, int id)
     {
-    	return getBookByISBN(isbn).getReviews().get(id);
+    	return getBookByISBN(isbn).getReviews().get(id-1);
     }
     
     /**
@@ -165,7 +164,8 @@ public class BookRepository implements BookRepositoryInterface {
      */
     public Author getAuthorByID(Long isbn, int id)
     {
-    	return getBookByISBN(isbn).getAuthors().get(id);
+    	
+    	return getBookByISBN(isbn).getAuthors().get(id-1);
     }
     
     /**

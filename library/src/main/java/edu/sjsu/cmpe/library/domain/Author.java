@@ -6,6 +6,15 @@ public class Author {
 	private int id;
 	private String name;
 	
+	public Author() {
+		id1++;
+		id = id1;
+	}
+	
+	protected void finalize() throws Throwable
+	{
+		id1=0;
+	}
 	/**
 	 * @return the id
 	 */
@@ -17,8 +26,7 @@ public class Author {
 	 * @param id
 	 * 				the id to set
 	 */
-	public Author() {
-		++id1;
+	public void setId(int id){
 		this.id = id1;
 		
 	}

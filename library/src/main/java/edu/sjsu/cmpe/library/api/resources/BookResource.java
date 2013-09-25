@@ -52,10 +52,18 @@ public class BookResource {
     public BookDto getBookByIsbn(@PathParam("isbn") LongParam isbn) {
     	Book book = bookRepository.getBookByISBN(isbn.get());
     	BookDto bookResponse = new BookDto(book);
-    	bookResponse.addLink(new LinkDto("view-book", "/books/" + book.getIsbn(),"GET"));
-    	bookResponse.addLink(new LinkDto("update-book","/books/" + book.getIsbn(), "PUT"));
-
-    	// add more links
+    	String location = "/books/" + book.getIsbn();
+    	bookResponse.addLink(new LinkDto("view-book", location,"GET"));
+    	bookResponse.addLink(new LinkDto("update-book",location, "PUT"));
+    	bookResponse.addLink(new LinkDto("delete-book",location, "DELETE"));
+    	bookResponse.addLink(new LinkDto("create-review",location + "/reviews", "POST"));
+    	
+    	if (bookRepository.getBookByISBN(isbn.get()).getReviews().size() > 0)
+    	{
+    		bookResponse.addLink(new LinkDto("view-all-reviews",location + "/reviews", "GET"));
+    	}
+    	
+    	
 
     	return bookResponse;
     }
@@ -100,7 +108,7 @@ public class BookResource {
     	linkResponse.addLink(new LinkDto("update-book",location, "PUT"));
     	linkResponse.addLink(new LinkDto("delete-book",location, "DELETE"));
     	linkResponse.addLink(new LinkDto("create-review",location + "/reviews", "POST"));
-    	if (bookRepository.getBookByISBN(isbn.get()).getReviews() != null)
+    	if (bookRepository.getBookByISBN(isbn.get()).getReviews().size() > 0 )
     	{
     		linkResponse.addLink(new LinkDto("view-all-reviews",location + "/reviews", "GET"));
     	}
@@ -129,6 +137,7 @@ public class BookResource {
     	review = bookRepository.getReviewByID(isbn, id);
     	
     	ReviewDto response = new ReviewDto(review);
+    	
     	String location = "/books/"+isbn+"/reviews/"+id;
     	
     	response.addLink(new LinkDto("view-review",location,"GET"));
